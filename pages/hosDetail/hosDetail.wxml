@@ -1,0 +1,59 @@
+<view class="box">
+	<!-- 基本信息 -->
+	<view class="basicInformation_box">
+		<view class="basicInformation_title">
+			<text>基本信息</text>
+		</view>
+		<view class="hosInfo basicInformation_main">
+			<view class="hosLogo">
+				<image src="/images/finish_is.png"></image>
+			</view>
+			<view class="hosInfoRight_box">
+				<view>
+					<text class="hosName">医院：</text>
+					<text class="hospitalNameColor">浙江省人民医院</text>
+				</view>
+				<view>
+					<text class="hosName">器械：</text>
+					<text>经肾碎石男性结石</text>
+				</view>
+				<view>
+					<text class="hosName">科室：</text>
+					<text>男科</text>
+				</view>
+				<view>
+					<text class="hosName">反馈人：</text>
+					<text>医生</text>
+				</view>
+				<view>
+					<text class="hosName">反馈时间：</text>
+					<text>2020年9月10日</text>
+				</view>
+			</view>
+		</view>
+	</view>
+	<!-- 反馈内容 -->
+	<view style="margin-top:20rpx;">
+		<view class="basicInformation_title">
+			<text>反馈内容</text>
+		</view>
+		<view class="feedbackContent">
+			<!-- 反馈文字 -->
+			<view class="feedbackWord">
+				使用时出血较多,患者疼痛较剧烈,伤口的吻合效果与产品的描述严重不符。
+			</view>
+			<!-- 反馈图片 -->
+			<view class="feedbackImage">
+				<image src="/images/finish.png"></image>
+				<image src="/images/finish.png"></image>
+				<image src="/images/finish.png"></image>
+				<image src="/images/finish.png"></image>
+				<image src="/images/finish.png"></image>
+				<image src="/images/finish.png"></image>
+			</view>
+		</view>
+	</view>
+	<!-- 回复 -->
+	<view></view>
+
+</view>

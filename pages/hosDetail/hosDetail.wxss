@@ -1,0 +1,39 @@
+@import '../patient//index.wxss';
+
+.box {
+  padding: 30rpx;
+}
+
+.basicInformation_title {
+  font-weight: 700;
+}
+
+.feedbackContent {
+  margin-top: 20rpx;
+  padding: 20rpx 30rpx;
+  border-radius: 30rpx;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+}
+
+.feedbackWord {
+  font-size: 30rpx;
+  font-weight: 700;
+}
+
+.feedbackImage {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-top: 20rpx;
+}
+
+.feedbackImage image {
+  width: 25%;
+  height: 144rpx;
+  padding: 10rpx;
+  /* margin: 0 10rpx 20rpx 0; */
+  box-sizing: border-box;
+  border-radius: 10rpx;
+
+}

@@ -1,0 +1,96 @@
+<view>
+	<!-- <view wx:if="{{!isLogin}}" class="noBingDoctorbox" bindtap="bindDoctor">
+		<text style="display:block;">还未登录,请点击登录</text>
+	</view> -->
+	<view style="padding:20rpx 30rpx 30rpx;box-sizing: border-box;">
+		<!-- 起始时间 结束时间 -->
+		<view class="picker_group">
+			<picker mode="date" value="{{startDate}}" end="{{endDate}}" bindchange="bindDateChange">
+				<view class="picker">
+					{{startDate}}
+				</view>
+			</picker>
+			-
+			<picker mode="date" value="{{endDate}}" start="{{startDate}}" end="2050-01-01" bindchange="bindDateChange2">
+				<view class="picker">
+					{{endDate}}
+				</view>
+			</picker>
+		</view>
+		<!-- 患者列表 -->
+		<!-- 为空 -->
+		<!-- <view class="kong" wx:if="{{patientList.length <= 0}}">
+			<text class="iconfont iconkong"></text>
+			<view style="color:#a8a8a8;margin-top:10rpx;">暂无患者</view>
+		</view> -->
+		<!-- 不为空 -->
+		<!-- <block wx:for="{{patientList}}" wx:key="id">
+			<view class="patientBlock" data-patientmessage="{{item}}" bindtap="patientListTap">
+
+				<view class="patientImage">
+					<image src="{{item.portrait}}" class="patientImg"></image>
+				</view>
+
+				<view style="padding: 4rpx 0 0 30rpx;box-sizing: border-box;">
+					<view class="patientName">{{item.name}}</view>
+					<view style="display:flex;">
+						<view class="setSave">
+							<text class="patientName_ques">随访设置：</text>
+							<image wx:if="{{item.isMatter == 0}}" class="closeImg" src="../../images/close.png"></image>
+							<image wx:else class="closeImg" src="../../images/right.png"></image>
+						</view>
+						<view class="setSave">
+							<text class="patientName_ques"
+					style="margin-left:20rpx;">问题记录：</text>
+							<image wx:if="{{item.isRequire == 0}}" class="closeImg" src="../../images/close.png"></image>
+							<image wx:else class="closeImg" src="../../images/right.png"></image>
+						</view>
+					</view>
+				</view>
+			</view>
+		</block> -->
+		<view>
+			<view class="title_box">
+				<view class="title">反馈列表</view>
+				<view class="choose_box">
+					<text class="choose">筛选</text>
+					<text class="iconfont iconarrow iconR"></text>
+				</view>
+			</view>
+			<!-- <view class="time">2020年5月27日</view> -->
+			<block wx:for="{{feedbackList}}" wx:key="id">
+				<view class="hosInfo">
+					<view class="reply" bindtap="replay">
+						回复
+					</view>
+					<view class="hosLogo">
+						<image src="/images/finish_is.png"></image>
+					</view>
+					<view class="hosInfoRight_box">
+						<view>
+							<text class="hosName">医院：</text>
+							<text class="hospitalNameColor">{{item.hospital}}</text>
+						</view>
+						<view>
+							<text class="hosName">器械：</text>
+							<text>{{item.goodsName}}</text>
+						</view>
+						<!-- <view>
+							<text class="hosName">科室：</text>
+							<text>男科</text>
+						</view> -->
+						<!-- 0 医生 1 患者 其他 -->
+						<view style="position: relative;">
+							<text class="hosName">反馈人：</text>
+							<text wx:if="{{item.userType == 0}}">医生</text>
+							<text wx:elif="{{item.userType == 1}}">患者</text>
+							<text wx:else>其他</text>
+							<!-- <text wx:else>其他</text> -->
+						</view>
+					</view>
+				</view>
+			</block>
+		</view>
+		<loadmore show="{{loadmoreShow}}" type="{{loadmoreType}}" loading-text="加载中,请稍后..." end-text="我是有底线的" line="{{true}}"></loadmore>
+	</view>
+</view>

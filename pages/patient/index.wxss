@@ -1,0 +1,108 @@
+.kong {
+  margin-top: 300rpx;
+  text-align: center;
+}
+
+.iconkong {
+  font-size: 64rpx;
+  color: #a8a8a8;
+}
+
+/* 日期选择 */
+.picker_group {
+  height: 85rpx;
+  line-height: 85rpx;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  font-size: 30rpx;
+  color: #888;
+  /* border-bottom: 1rpx solid #efefef; */
+
+}
+
+.picker_group picker {
+  /* background-color: yellow; */
+  color: #1ADCA9;
+  height: 55rpx;
+  line-height: 55rpx;
+  margin: 0 2%;
+  padding: 0 5%;
+  border: 1rpx solid #1ADCA9;
+  border-radius: 30rpx;
+}
+
+.title_box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 30rpx;
+}
+
+.title_box .title {
+  font-size: 32rpx;
+  font-weight: 700;
+}
+
+.choose_box {
+  display: flex;
+  align-items: center;
+}
+
+.choose {
+  font-size: 26rpx;
+  font-weight: 700;
+}
+
+.iconR {
+  font-size: 40rpx;
+}
+
+.time {
+  margin-top: 20rpx;
+  font-size: 26rpx;
+  font-weight: 700;
+}
+
+.hosInfo {
+  position: relative;
+  display: flex;
+  margin-top: 20rpx;
+  padding: 20rpx 30rpx;
+  border-radius: 30rpx;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, .1);
+}
+.hosLogo {
+  display: flex;
+  align-items: center;
+}
+.hosLogo image {
+  width: 96rpx;
+  height: 96rpx;
+}
+
+.hosInfoRight_box {
+  font-size: 30rpx;
+  font-weight: 700;
+  padding-left: 20rpx;
+}
+.hosInfoRight_box view {
+  margin: 20rpx 0;
+}
+.hosName {
+  font-weight: 400;
+}
+.hospitalNameColor {
+  color: #FDBD2F;
+}
+.reply {
+  position: absolute;
+  right: 30rpx;
+  bottom: 30rpx;
+  padding: 5rpx 20rpx;
+  font-size: 24rpx;
+  font-weight: 700;
+  border-radius: 60rpx;
+  border: 1px solid #1ADCA9;
+  color: #1ADCA9;
+}

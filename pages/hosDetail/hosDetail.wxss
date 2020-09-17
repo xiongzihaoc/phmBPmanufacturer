@@ -28,9 +28,11 @@
   margin-top: 20rpx;
 }
 
+/* .uploadReplayImg */
 .feedbackImage image {
+  display: inline-block;
   width: 25%;
-  height: 144rpx;
+  height: 157rpx;
   padding: 10rpx;
   /* margin: 0 10rpx 20rpx 0; */
   box-sizing: border-box;
@@ -47,6 +49,7 @@
 
 .uploadImg {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
 }
 
@@ -60,4 +63,24 @@
   border-radius: 40rpx;
   text-align: center;
   background-color: #1ADCA9;
+}
+
+.replayImg {
+  display: inline-block;
+  width: 25%;
+  height: 157rpx;
+  padding: 10rpx;
+  /* margin: 0 10rpx 20rpx 0; */
+  box-sizing: border-box;
+}
+
+.ccc {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  width: 155rpx;
+  height: 147rpx;
+  box-sizing: border-box;
+  color: #D3D3D3
 }

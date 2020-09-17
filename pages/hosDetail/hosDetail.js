@@ -23,19 +23,20 @@ Page({
   },
   // 上传图片
   upload: function () {
+    let that = this
     wx.chooseImage({
       count: 3,
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success(res) {
         console.log(res);
-        
+
         // tempFilePath可以作为img标签的src属性显示图片
-        const tempFilePaths = res.tempFilePaths
-        console.log(tempFilePaths);
-        
-        this.setData({
-          imageList: tempFilePaths
+        // const tempFilePaths = res.tempFilePaths
+        // console.log(tempFilePaths);
+
+        that.setData({
+          imageList: that.data.imageList.concat(res.tempFilePaths)
         })
       }
     })
@@ -50,7 +51,7 @@ Page({
   replyBtn: function (e) {
     let that = this
     console.log(e);
-    patientInfo.replayInfo(this.data.replyId, this.data.message, (res) => {
+    patientInfo.replayInfo(this.data.replyId, this.data.message,this.data.imageList, (res) => {
       console.log(res);
       wx.switchTab({
         url: '/pages/patient/index',

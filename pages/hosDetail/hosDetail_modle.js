@@ -26,7 +26,7 @@ class Patient extends Comm {
     }
     this.request(props);
   }
-  replayInfo(replayId, content, callback) {
+  replayInfo(replayId, content,imageList, callback) {
     // var doctorUuid = wx.getStorageSync('openId');
     let props = {
       url: "/api/vendor/reply",
@@ -34,7 +34,7 @@ class Patient extends Comm {
       data: {
         "feedbackId":replayId,
         "content":content,
-        "photos":[]
+        "photos":imageList
       },
       sCallBack: res => {
         wx.hideLoading();

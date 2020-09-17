@@ -78,14 +78,12 @@
 				<input value="{{message}}" placeholder="点击回复" bindinput="bindEdit"></input>
 			</view>
 			<!-- 回复图片 -->
-			<view bindtap="upload" class="uploadImg">
-				<view style="background:#fff;padding:50rpx 30rpx;margin-top:20rpx;box-sizing:border-box;color:#D3D3D3">
-				<block wx:for="{{imageList}}" wx:key="item">
-					<image src="{{item}}">{{item}}</image>
-					<view>{{item}}</view>
+			<view bindtap="upload" class="uploadImg uploadReplayImg">
+				<block wx:for="{{imageList}}">
+					<image class="replayImg" src="{{item}}"></image>
 				</block>
-					<view class="iconfont iconzhaoxiangji" style="text-align:center;"></view>
-					<view>添加图片</view>
+				<view class="ccc">
+					<view class="iconfont iconzhaoxiangji" style="font-size:40rpx"></view>
 				</view>
 			</view>
 		</view>

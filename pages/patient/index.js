@@ -1,5 +1,21 @@
 import { Patient } from "./index_modle"
 let patientInfo = new Patient();
+var utils = require("../../utils/util.js");
+const date = new Date()
+const years = []
+const months = []
+const days = []
+for (let i = 1990; i <= date.getFullYear(); i++) {
+  years.push(i)
+}
+
+for (let i = 1; i <= 12; i++) {
+  months.push(i)
+}
+
+for (let i = 1; i <= 31; i++) {
+  days.push(i)
+}
 Page({
 
   /**
@@ -7,95 +23,398 @@ Page({
  */
   data: {
     name: "",
-    startDate: "",
-    endDate: "",
+    timeType: 1,
+    startTime: "",
+    endTime: "",
+    // 时间选择器
+    searchTimerPopupShow: false,
+    // 筛选选择
+    screenShow: false,
+    // 筛选医院列表
+    hospitalList: [],
+    // 筛选器械列表
+    instrumentList: [],
     loadmoreShow: "false",
     loadmoreType: "end",
-    healthPageSize: "",
-    feedbackList: [],
     healthList: [],
-    healthTotal: 1,
+    healthTotal: 0,
     healthPageNum: 1,
-    healthPageSize: 6,
+    healthPageSize: 4,
     isLogin: false,
+    startDate: "",
+    endDate: "",
+    MaintList: [],
+    years,
+    months,
+    days,
+    value: [],
+    chooseTime: "",
+    parameterList: [],
+    parameterNum: null,
+    replayNum: null,
+    officeList: [],
+    officeNum: null,
+    instrumentNum: null,
+    instrumentAllNum: null,
+    hosNum: null,
+    hosAllNum: null,
+    replayList: [
+      { id: 1, name: "已回复", state: "1" },
+      { id: 2, name: "未回复", state: "0" }
+    ],
+    parameterObj: {},
   },
-  // 点击单个患者查看详情
+  // 点击回复
   replay: function (e) {
-    // const id = e.currentTarget.dataset.patientmessage.patientUuid
-    // wx.setStorageSync('patientUuid', id)
+    const replayId = e.currentTarget.dataset.id
     wx.navigateTo({
-      url: '/pages/hosDetail/hosDetail',
+      url: '/pages/hosDetail/hosDetail?id=' + replayId,
     })
   },
-  // 获取所有患者列表
+  // 点击查看
+  examine: function (e) {
+    const replayId = e.currentTarget.dataset.id
+    var id = e.currentTarget.dataset.status
+    wx.navigateTo({
+      url: '/pages/hosDetail/hosDetail?state=' + id + '&id=' + replayId,
+    })
+  },
+  // 筛选
+  screen: function () {
+    let that = this
+    this.getHospitalList()
+    this.getInstrumentList()
+    this.setData({
+      screenShow: true,
+    })
+
+  },
+  // 获取反馈列表
   getUserInfo: function () {
     let that = this
     wx.showLoading({
       title: '加载中...',
     });
-    patientInfo.getUserInfo(this.data.name, this.data.healthPageNum, this.data.healthPageSize, (res) => {
+    patientInfo.getUserInfo(this.data.healthPageNum, this.data.healthPageSize, this.data.parameterObj, (res) => {
       console.log(res);
-      this.setData({
-        feedbackList: res
-      })
+      
       var num = Math.round(res.count / this.data.healthPageSize);
-      if (num % that.data.healthPageSize > 0) {
+      if (res.count % that.data.healthPageSize > 0) {
         num++;
       }
       if (num == 0) {
         num++;
       }
+      // 原列表
+      let noticeList = that.data.healthList;
+      console.log(noticeList);
+
+      // 新列表
+      let arr = res.data
+      //新列表数据与原列表数据合并
+      let newArr = noticeList.concat(arr);
+      console.log(newArr);
+
       that.setData({
-        healthList: that.data.healthList.concat(res.data),
+        healthList: newArr,
         healthTotal: num
       });
-      console.log(that.data.healthTotal);
+      console.log(that.data.healthList);
 
     });
   },
-  bindDateChange: function (e) {
-    let that = this;
-    console.log(e.detail.value)
-    that.setData({
-      startDate: e.detail.value,
-    })
-    // this.getMaintInfo()
+  // 获取医院科室列表
+  getHospitalList: function () {
+    patientInfo.getHospitalList((res) => {
+      console.log(res);
+      this.setData({
+        hospitalList: res.data
+      })
+    });
   },
-  bindDateChange2: function (e) {
-    let that = this;
-    console.log(e.detail.value)
-    that.setData({
-      endDate: e.detail.value,
-    })
-    // this.getMaintInfo()
+  // 获取器械列表
+  getInstrumentList: function () {
+    patientInfo.getInstrumentList((res) => {
+      console.log(res);
+      this.setData({
+        instrumentList: res.data
+      })
+    });
   },
+  // 回复选择
+  replayState: function (e) {
+    let that = this
+    let state = e.currentTarget.dataset.state
+    let replay = that.data.replayList
+    this.setData({
+      replayNum: state
+    })
+  },
+  // 医院选择全部
+  chooseHosAll: function (e) {
+    let that = this
+    let hosList = that.data.hospitalList
+    let officeList = that.data.officeList
+    let hosArr = []
+    hosList.forEach(item => {
+      hosArr.push(...item.child)
+    })
+    if (that.data.hosAllNum == null) {
+      hosArr.forEach((item) => {
+        item.choose = 0
+      })
+      that.setData({
+        hosAllNum: 1,
+        hosNum: null,
+        officeList: hosArr
+      })
+    } else {
+      that.setData({
+        hosAllNum: null,
+        officeNum:null,
+        officeList: []
+      })
+    }
 
+  },
+  // 医院单选
+  chooseHos: function (e) {
+    let that = this
+    let id = e.currentTarget.dataset.id
+    let info = e.currentTarget.dataset.info
+    let hosList = that.data.hospitalList
+    this.setData({
+      hosNum: id,
+      officeList: info
+    });
+  },
+  // 科室单选多选
+  chooseOffice: function (e) {
+    let that = this
+    let code = e.currentTarget.dataset.code
+    let info = e.currentTarget.dataset.info
+    let officeList = that.data.officeList
+    officeList.forEach((item) => {
+      if (item.code == code) {
+        if (item.choose == 1) {
+          item.choose = 0
+        } else {
+          item.choose = 1
+        }
+      }
+    })
+    that.setData({
+      officeList: officeList
+    })
+  },
+  // 科室全选
+  chooseOfficeAll: function (e) {
+    let that = this
+    let officeList = that.data.officeList
+
+    if (that.data.officeNum == null) {
+      officeList.forEach((item) => {
+        // console.log(that.data.officeNum);
+        item.choose = 1
+        that.setData({
+          officeNum: 1
+        })
+      })
+    } else {
+      officeList.forEach((item) => {
+        // console.log(that.data.officeNum);
+        item.choose = 0
+        that.setData({
+          officeNum: null
+        })
+      })
+    }
+    that.setData({
+      officeList: officeList
+    })
+
+  },
+  // 器械选择全部
+  chooseInstrumentAll: function () {
+    let that = this
+    let instrList = that.data.instrumentList
+    let instrArr = []
+    instrList.forEach(item => {
+      instrArr.push(...item.models)
+    })
+    if (that.data.instrumentAllNum == null) {
+      instrArr.forEach((item) => {
+        item.choose = 0
+      })
+      that.setData({
+        instrumentAllNum: 1,
+        instrumentNum: null,
+        parameterList: instrArr
+      })
+    } else {
+      that.setData({
+        instrumentAllNum: null,
+        parameterNum:null,
+        parameterList: []
+      })
+    }
+
+
+  },
+  // 器械单选
+  chooseInstrument: function (e) {
+    console.log(e.currentTarget.dataset.id);
+    let that = this
+    let id = e.currentTarget.dataset.id
+    let info = e.currentTarget.dataset.info
+    let instrList = that.data.instrumentList
+    that.setData({
+      instrumentNum: id,
+      parameterList: info
+    });
+
+  },
+  // 参数单多选
+  chooseparameter: function (e) {
+    let that = this
+    let id = e.currentTarget.dataset.id
+    let info = e.currentTarget.dataset.info
+    let parameterList = that.data.parameterList
+    parameterList.forEach((item) => {
+      console.log(item);
+      if (item.id == id) {
+        if (item.choose == 1) {
+          item.choose = 0
+        } else {
+          item.choose = 1
+        }
+      }
+    })
+    that.setData({
+      parameterList: parameterList
+    })
+  },
+  // 参数全部
+  chooseparameterAll: function (e) {
+    let that = this
+    let parameterList = that.data.parameterList
+    if (that.data.parameterNum == null) {
+      parameterList.forEach((item) => {
+        // console.log(that.data.officeNum);
+        item.choose = 1
+        that.setData({
+          parameterNum: 1
+        })
+      })
+    } else {
+      parameterList.forEach((item) => {
+        // console.log(that.data.officeNum);
+        item.choose = 0
+        that.setData({
+          parameterNum: null
+        })
+      })
+    }
+    that.setData({
+      parameterList: parameterList
+    })
+    // this.getUserInfo()
+  },
+  // 确认筛选
+  btnScreen: function (e) {
+    let that = this
+    let officeList = that.data.officeList
+    let officeArr = ""
+    let parameterList = that.data.parameterList
+    let parameterArr = ""
+    // 科室code集合
+    officeList.forEach((item) => {
+      if (item.choose == 1) {
+        officeArr += item.code + ','
+      }
+    })
+    officeArr = officeArr.slice(0, officeArr.length - 1)
+
+    // 器械code集合
+    parameterList.forEach((item) => {
+      if (item.choose == 1) {
+        parameterArr += item.id + ','
+      }
+    })
+    parameterArr = parameterArr.slice(0, parameterArr.length - 1)
+    console.log(officeArr);
+    console.log(parameterArr);
+    console.log(this.data.replayNum);
+    that.setData({
+      parameterObj: {
+        hospital: officeArr,
+        goodsModelIdStr: parameterArr,
+        status: that.data.replayNum
+      },
+      screenShow: false,
+    })
+    this.getUserInfo();
+  },
+  selectTimer: function () {
+    this.setData({
+      searchTimerPopupShow: true
+    });
+  },
+  done: function () {
+    this.setData({
+      chooseTime: this.data.startTime + " / " + this.data.endTime,
+      searchTimerPopupShow: false,
+      healthPageNum: 1,
+      healthTotal: 1
+    });
+  },
+  clear: function () {
+    this.setData({
+      searchTimerPopupShow: false
+    });
+  },
+  changeTimerType: function (e) {
+    var type = utils.getDataSet(e, "type");
+    this.setData({
+      timeType: type
+    });
+  },
+  bindChange(e) {
+    console.log(e);
+
+    let that = this;
+    const val = e.detail.value;
+    if (this.data.timeType == 1) {
+      this.setData({
+        startTime: that.data.years[val[0]] + "-" + that.data.months[val[1]] + "-" + that.data.days[val[2]],
+        startDate: that.data.years[val[0]] + "-" + that.data.months[val[1]] + "-" + that.data.days[val[2]]
+      });
+    } else {
+      this.setData({
+        endTime: that.data.years[val[0]] + "-" + that.data.months[val[1]] + "-" + that.data.days[val[2]],
+        endDate: that.data.years[val[0]] + "-" + that.data.months[val[1]] + "-" + that.data.days[val[2]]
+      });
+    }
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let that = this
-    var info = new Date()
-    var y = info.getFullYear()
-    // 当前月份
-    var m = info.getMonth() + 1
-    var d = info.getDate()
-    if (m < 10) {
-      m = "0" + m;
-    }
-    if (d < 10) {
-      d = "0" + d;
-    }
-    var starttime = `${y}-${m}-${d}`
-    var endtime = `${y}-${m}-${d}`
-    that.setData({
-      endDate: endtime,
-      startDate: starttime
-    })
+    let that = this;
+    let current = utils.getCurrentDate().split("-");
+    console.log(current);
+    current.forEach(element => {
+      console.log(element - 1);
+      that.setData({
+        value: that.data.value.concat(element - 1)
+      });
+    });
+    this.setData({
+      startTime: utils.getCurrentDate(),
+      endTime: utils.getCurrentDate(),
+      // value:that.data.value.concat()
+    });
     this.getUserInfo();
-  },
-  timeChange() {
-
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -110,16 +429,16 @@ Page({
   onShow: function (e) {
     let that = this;
     let openId = wx.getStorageSync('openId');
-    let isExist  = wx.getStorageSync('isExist');
+    let isExist = wx.getStorageSync('isExist');
     if (openId) {
       this.setData({
         isLogin: true
       });
-      if(isExist == "0") {
+      if (isExist == "0") {
         wx.navigateTo({
           url: '../bindNum/bindNum',
         })
-      }else {
+      } else {
         wx.showLoading({
           title: '加载中...',
         })
@@ -167,6 +486,7 @@ Page({
         loadmoreType: "loading",
         healthPageNum: that.data.healthPageNum + 1
       });
+      console.log(that.data.healthPageNum);
       this.getUserInfo();
     } else {
       this.setData({

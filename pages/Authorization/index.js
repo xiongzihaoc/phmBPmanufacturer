@@ -22,6 +22,7 @@ Page({
       wx.setStorageSync('nickName', data.userInfo.nickName);
       wx.setStorageSync('avatarUrl', data.userInfo.avatarUrl);
       wx.setStorageSync('phone', data.userInfo.phone);
+      wx.setStorageSync('vendorId', data.userInfo.vendorId);
       wx.setStorageSync('isExist', data.isExist);
       if (data.isExist == 0) {
         wx.redirectTo({

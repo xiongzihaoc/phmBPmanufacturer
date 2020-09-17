@@ -3,8 +3,6 @@ import { RegModle } from './index.modle'
 let RegModleInfo = new RegModle();
 const app = new getApp();
 
-import QR from "../../utils/weapp-qrcode" // 二维码生成器
-
 Page({
 
   /**

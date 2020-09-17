@@ -85,6 +85,15 @@ Page({
     this.getHospitalList()
     this.getInstrumentList()
     this.setData({
+      parameterNum: null,
+      replayNum: null,
+      officeNum: null,
+      instrumentNum: null,
+      instrumentAllNum: null,
+      hosNum: null,
+      hosAllNum: null,
+      officeList: [],
+      parameterList: [],
       screenShow: true,
     })
 
@@ -95,9 +104,8 @@ Page({
     wx.showLoading({
       title: '加载中...',
     });
-    patientInfo.getUserInfo(this.data.healthPageNum, this.data.healthPageSize, this.data.parameterObj, (res) => {
+    patientInfo.getUserInfo(that.data.healthPageNum, that.data.healthPageSize, that.data.startTime, that.data.endTime, that.data.parameterObj, (res) => {
       console.log(res);
-      
       var num = Math.round(res.count / this.data.healthPageSize);
       if (res.count % that.data.healthPageSize > 0) {
         num++;
@@ -171,7 +179,7 @@ Page({
     } else {
       that.setData({
         hosAllNum: null,
-        officeNum:null,
+        officeNum: null,
         officeList: []
       })
     }
@@ -254,7 +262,7 @@ Page({
     } else {
       that.setData({
         instrumentAllNum: null,
-        parameterNum:null,
+        parameterNum: null,
         parameterList: []
       })
     }
@@ -318,7 +326,6 @@ Page({
     that.setData({
       parameterList: parameterList
     })
-    // this.getUserInfo()
   },
   // 确认筛选
   btnScreen: function (e) {
@@ -335,16 +342,16 @@ Page({
     })
     officeArr = officeArr.slice(0, officeArr.length - 1)
 
-    // 器械code集合
+    // 器械参数code集合
     parameterList.forEach((item) => {
       if (item.choose == 1) {
         parameterArr += item.id + ','
       }
     })
     parameterArr = parameterArr.slice(0, parameterArr.length - 1)
-    console.log(officeArr);
+
     console.log(parameterArr);
-    console.log(this.data.replayNum);
+
     that.setData({
       parameterObj: {
         hospital: officeArr,
@@ -367,6 +374,7 @@ Page({
       healthPageNum: 1,
       healthTotal: 1
     });
+    this.getUserInfo()
   },
   clear: function () {
     this.setData({
@@ -409,12 +417,13 @@ Page({
         value: that.data.value.concat(element - 1)
       });
     });
+    this.getUserInfo();
     this.setData({
       startTime: utils.getCurrentDate(),
       endTime: utils.getCurrentDate(),
       // value:that.data.value.concat()
     });
-    this.getUserInfo();
+
   },
   /**
    * 生命周期函数--监听页面初次渲染完成

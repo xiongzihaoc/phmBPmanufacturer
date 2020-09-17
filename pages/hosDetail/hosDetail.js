@@ -19,6 +19,7 @@ Page({
     replyPhotos: [],
     replyId: "",
     message: "",
+    imageList: [],
   },
   // 上传图片
   upload: function () {
@@ -28,8 +29,14 @@ Page({
       sourceType: ['album', 'camera'],
       success(res) {
         console.log(res);
+        
         // tempFilePath可以作为img标签的src属性显示图片
         const tempFilePaths = res.tempFilePaths
+        console.log(tempFilePaths);
+        
+        this.setData({
+          imageList: tempFilePaths
+        })
       }
     })
   },

@@ -3,9 +3,8 @@ class Patient extends Comm {
   constructor() {
     super();
   }
-  getUserInfo(pageNum, pageSzie, parameterObj, callback) {
-    console.log(parameterObj);
-
+  getUserInfo(pageNum, pageSzie, stime, etime, parameterObj, callback) {
+    let vendorId = (wx.getStorageSync('vendorId'))
     let props = {
       url: "/api/vendor/list",
       contentType: 'application/json',
@@ -15,6 +14,9 @@ class Patient extends Comm {
         "hospital": parameterObj.hospital,
         "goodsModelIdStr": parameterObj.goodsModelIdStr,
         "status": parameterObj.status,
+        "createTime": stime,
+        "endTime": etime,
+        "vendorId": vendorId,
       },
       sCallBack: res => {
         wx.hideLoading();

@@ -9,7 +9,8 @@
 				<!-- 搜索框 -->
 				<view class="weui-search-bar__box searchInput" bindtap="selectTimer">
 					<icon class="weui-icon-search_in-box" type="search" size="24"></icon>
-					<input value="{{chooseTime}}" type="text" disabled="{{true}}" class="weui-search-bar__input" placeholder="按时间搜索" readonly="readonly" style="color:#a8a8a8;" />
+					<input value="{{chooseTime}}" type="text" disabled="{{true}}" class="weui-search-bar__input"
+						placeholder="按时间搜索" readonly="readonly" style="color:#a8a8a8;" />
 				</view>
 			</view>
 		</view>
@@ -66,12 +67,14 @@
 					<text class="{{timeType==2?'active':''}}" bindtap="changeTimerType" data-type="2">{{endTime}}</text>
 				</view>
 				<view class="popup_type_pick">
-					<picker-view indicator-style="height: 100rpx;" style="width: 100%; height: 400rpx;" value="{{value}}" bindchange="bindChange">
+					<picker-view indicator-style="height: 100rpx;" style="width: 100%; height: 400rpx;" value="{{value}}"
+						bindchange="bindChange">
 						<picker-view-column>
 							<view wx:for="{{years}}" wx:key="years" style="line-height: 100rpx; text-align: center;">{{item}}年</view>
 						</picker-view-column>
 						<picker-view-column>
-							<view wx:for="{{months}}" wx:key="months" style="line-height: 100rpx; text-align: center;">{{item}}月</view>
+							<view wx:for="{{months}}" wx:key="months" style="line-height: 100rpx; text-align: center;">{{item}}月
+							</view>
 						</picker-view-column>
 						<picker-view-column>
 							<view wx:for="{{days}}" wx:key="days" style="line-height: 100rpx; text-align: center;">{{item}}日</view>
@@ -82,7 +85,6 @@
 		</l-popup>
 		<!-- 上拉菜单 -->
 		<l-popup show="{{screenShow}}">
-
 			<view class="screen_box">
 				<scroll-view scroll-y="true" scroll-top="{{y}}" scroll-with-animation="{{true}}" style="height:100%">
 					<!-- 回复状态 -->
@@ -93,10 +95,12 @@
 						<view class="recoilState_">
 							<block wx:for="{{replayList}}" wx:key="id">
 								<block wx:if="{{item.state == replayNum}}">
-									<text class="recoilState_choose " style="display:inline-block;margin:0 20rpx 0 0;" bindtap="replayState" data-state="{{item.state}}" >{{item.name}}</text>
+									<text class="recoilState_choose " style="display:inline-block;margin:0 20rpx 0 0;"
+										bindtap="replayState" data-state="{{item.state}}">{{item.name}}</text>
 								</block>
 								<block wx:else>
-									<text class="recoilState_con" style="display:inline-block;margin:0 20rpx 0 0;" bindtap="replayState" data-state="{{item.state}}" >{{item.name}}</text>
+									<text class="recoilState_con" style="display:inline-block;margin:0 20rpx 0 0;" bindtap="replayState"
+										data-state="{{item.state}}">{{item.name}}</text>
 								</block>
 							</block>
 						</view>
@@ -117,15 +121,15 @@
 								</block>
 								<block wx:for="{{hospitalList}}" wx:key="id">
 									<block wx:if="{{item.id == hosNum}}">
-										<text class="hos_style  recoilState_choose"
-								bindtap="chooseHos" data-id="{{item.id}}"  data-info="{{item.child}}">{{item.name}}</text>
+										<text class="hos_style  recoilState_choose" bindtap="chooseHos" data-id="{{item.id}}"
+											data-info="{{item.child}}">{{item.name}}</text>
 									</block>
 									<block wx:elif="{{hosAllNum == 1}}">
 										<text class="hos_style  recoilState_choose">{{item.name}}</text>
 									</block>
 									<block wx:else>
-										<text class="hos_style  recoilState_con"
-								bindtap="chooseHos" data-id="{{item.id}}"  data-info="{{item.child}}">{{item.name}}</text>
+										<text class="hos_style  recoilState_con" bindtap="chooseHos" data-id="{{item.id}}"
+											data-info="{{item.child}}">{{item.name}}</text>
 									</block>
 								</block>
 							</view>
@@ -137,7 +141,7 @@
 						<scroll-view scroll-x="true" scroll-left="{{x}}" scroll-with-animation="{{true}}">
 							<view class="recoilState_">
 								<block wx:if="{{officeNum == 1}}">
-									<text  class="recoilState_choose commonSty" bindtap="chooseOfficeAll">全部</text>
+									<text class="recoilState_choose commonSty" bindtap="chooseOfficeAll">全部</text>
 								</block>
 								<block wx:else>
 									<text class="recoilState_con commonSty" bindtap="chooseOfficeAll">全部</text>
@@ -149,7 +153,7 @@
 									</block>
 									<block wx:else>
 										<text class="hos_style recoilState_con {{item.choose == 1?'recoilState_choose':'recoilState_con'}}"
-								bindtap="chooseOffice" data-code="{{item.code}}" data-info="{{item}}">{{item.name}}</text>
+											bindtap="chooseOffice" data-code="{{item.code}}" data-info="{{item}}">{{item.name}}</text>
 									</block>
 								</block>
 							</view>
@@ -170,16 +174,15 @@
 								</block>
 								<block wx:for="{{instrumentList}}" wx:key="id">
 									<block wx:if="{{item.id == instrumentNum}}">
-										<text class="hos_style recoilState_choose"
-								bindtap="chooseInstrument" data-id="{{item.id}}"  data-info="{{item.models}}">{{item.name}}</text>
+										<text class="hos_style recoilState_choose" bindtap="chooseInstrument" data-id="{{item.id}}"
+											data-info="{{item.models}}">{{item.name}}</text>
 									</block>
 									<block wx:elif="{{instrumentAllNum == 1}}">
-										<text class="hos_style recoilState_choose"
-								>{{item.name}}</text>
+										<text class="hos_style recoilState_choose">{{item.name}}</text>
 									</block>
 									<block wx:else>
-										<text class="hos_style recoilState_con"
-								bindtap="chooseInstrument" data-id="{{item.id}}"  data-info="{{item.models}}">{{item.name}}</text>
+										<text class="hos_style recoilState_con" bindtap="chooseInstrument" data-id="{{item.id}}"
+											data-info="{{item.models}}">{{item.name}}</text>
 									</block>
 								</block>
 							</view>
@@ -193,7 +196,7 @@
 						<scroll-view scroll-x="true">
 							<view class="recoilState_">
 								<block wx:if="{{parameterNum == 1}}">
-									<text  class="recoilState_choose commonSty" bindtap="chooseparameterAll">全部</text>
+									<text class="recoilState_choose commonSty" bindtap="chooseparameterAll">全部</text>
 								</block>
 								<block wx:else>
 									<text class="recoilState_con commonSty" bindtap="chooseparameterAll">全部</text>
@@ -205,7 +208,7 @@
 									</block>
 									<block wx:else>
 										<text class="hos_style recoilState_con {{item.choose == 1?'recoilState_choose':'recoilState_con'}}"
-								bindtap="chooseparameter" data-id="{{item.id}}"  data-info="{{item}}">{{item.model}}</text>
+											bindtap="chooseparameter" data-id="{{item.id}}" data-info="{{item}}">{{item.model}}</text>
 									</block>
 								</block>
 							</view>
@@ -218,6 +221,7 @@
 
 		</l-popup>
 		<!-- 懒加载 -->
-		<loadmore show="{{loadmoreShow}}" type="{{loadmoreType}}" loading-text="加载中,请稍后..." end-text="我是有底线的" line="{{true}}"></loadmore>
+		<loadmore show="{{loadmoreShow}}" type="{{loadmoreType}}" loading-text="加载中,请稍后..." end-text="我是有底线的"
+			line="{{true}}"></loadmore>
 	</view>
 </view>

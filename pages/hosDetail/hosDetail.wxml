@@ -79,10 +79,10 @@
 			</view>
 			<!-- 回复图片 -->
 			<view bindtap="upload" class="uploadImg uploadReplayImg">
-				<block wx:for="{{imageList}}">
+				<block wx:for="{{imageList}}" wx:key="index">
 					<image class="replayImg" src="{{item}}"></image>
 				</block>
-				<view class="ccc">
+				<view class="uploadIcon">
 					<view class="iconfont iconzhaoxiangji" style="font-size:40rpx"></view>
 				</view>
 			</view>

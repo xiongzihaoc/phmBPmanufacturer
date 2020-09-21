@@ -113,18 +113,12 @@ Page({
       if (num == 0) {
         num++;
       }
-      // 原列表
-      let noticeList = that.data.healthList;
-      console.log(noticeList);
+      console.log(that.data.healthList);
+      console.log(res.data);
 
-      // 新列表
-      let arr = res.data
-      //新列表数据与原列表数据合并
-      let newArr = noticeList.concat(arr);
-      console.log(newArr);
-
+      
       that.setData({
-        healthList: newArr,
+        healthList: that.data.healthList.concat(res.data),
         healthTotal: num
       });
       console.log(that.data.healthList);

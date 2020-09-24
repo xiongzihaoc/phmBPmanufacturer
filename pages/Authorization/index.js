@@ -31,8 +31,9 @@ Page({
       } else {
         // wx.setStorageSync('tencentImUser', data.userInfo.tencentImUser);
         // wx.setStorageSync('tencentImPassword', data.userInfo.tencentImPassword);
-        wx.navigateBack({
-        });
+        wx.switchTab({
+          url: '/pages/mine/index',
+        })
       }
 
     });

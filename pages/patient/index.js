@@ -323,6 +323,9 @@ Page({
   },
   // 确认筛选
   btnScreen: function (e) {
+    this.setData({
+      healthList:[]
+    });
     let that = this
     let officeList = that.data.officeList
     let officeArr = ""
@@ -357,12 +360,23 @@ Page({
     this.getUserInfo();
   },
   selectTimer: function () {
+    if(this.data.startTime == ''){
+      this.setData({
+        startTime: utils.getCurrentDate(),
+      });
+    }
+    if(this.data.endTime == ''){
+      this.setData({
+        endTime: utils.getCurrentDate(),
+      });
+    }
     this.setData({
       searchTimerPopupShow: true
     });
   },
   done: function () {
     this.setData({
+      healthList:[],
       chooseTime: this.data.startTime + " / " + this.data.endTime,
       searchTimerPopupShow: false,
       healthPageNum: 1,
@@ -397,6 +411,8 @@ Page({
         endDate: that.data.years[val[0]] + "-" + that.data.months[val[1]] + "-" + that.data.days[val[2]]
       });
     }
+    console.log(this.data.startTime);
+    console.log(this.data.endTime);
   },
   /**
    * 生命周期函数--监听页面加载
@@ -412,12 +428,6 @@ Page({
       });
     });
     this.getUserInfo();
-    this.setData({
-      startTime: utils.getCurrentDate(),
-      endTime: utils.getCurrentDate(),
-      // value:that.data.value.concat()
-    });
-
   },
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -441,11 +451,6 @@ Page({
         wx.navigateTo({
           url: '../bindNum/bindNum',
         })
-      } else {
-        wx.showLoading({
-          title: '加载中...',
-        })
-        this.getUserInfo();
       }
 
     } else {

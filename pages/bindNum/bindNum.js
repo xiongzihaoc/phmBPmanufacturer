@@ -77,9 +77,9 @@ Page({
     })
     bindNumModle.bindDoctor(this.data.phone, this.data.code, (res) => {
       console.log(res);
-      wx.setStorageSync('name', "1");
-      wx.setStorageSync('tencentImUser', res.tencentImUser);
-      wx.setStorageSync('tencentImPassword', res.tencentImPassword);
+      wx.setStorageSync('isExist', "1");
+      // wx.setStorageSync('tencentImUser', res.tencentImUser);
+      // wx.setStorageSync('tencentImPassword', res.tencentImPassword);
       wx.switchTab({
         url: '/pages/mine/index',
       })

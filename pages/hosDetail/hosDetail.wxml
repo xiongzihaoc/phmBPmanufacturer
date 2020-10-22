@@ -38,14 +38,18 @@
 		<view class="feedbackContent">
 			<!-- 反馈文字 -->
 			<view class="feedbackWord">
-				{{content}}
+				{{content == null?'无':content}}
 			</view>
 			<!-- 反馈图片 -->
-			<view class="feedbackImage" wx:if="{{feedList.length > 0}}">
-				<block wx:for="{{feedList}}" wx:key="id">
-					<image src="{{item.photoUrl}}" data-url="{{item.photoUrl}}" bindtap="preViewImg"></image>
-				</block>
-			</view>
+			<block wx:if="{{feedList.length > 0}}">
+				<view class="feedbackImage">
+					<block wx:for="{{feedList}}" wx:key="index">
+						<view class="replayImg">
+							<image src="{{item.photoUrl}}" data-url="{{item.photoUrl}}" bindtap="preViewImg"></image>
+						</view>
+					</block>
+				</view>
+			</block>
 		</view>
 	</view>
 	<!-- 已回复查看回复 -->
@@ -55,14 +59,16 @@
 		</view>
 		<view class="replay_box">
 			<!-- 回复文字 -->
-			<view>
+			<view style="word-break:break-all">
 				{{replyContent}}
 				<!-- <input placeholder="点击回复"></input> -->
 			</view>
 			<!-- 回复图片 -->
 			<view class=" uploadImg feedbackImage" wx:if="{{replyPhotos.length > 0}}">
-				<block wx:for="{{replyPhotos}}" wx:key="id">
-					<image src="{{item.photoUrl}}" data-url="{{item.photoUrl}}" bindtap="preViewImg"></image>
+				<block wx:for="{{replyPhotos}}" wx:key="index">
+					<view class="replayImg">
+						<image src="{{item.photoUrl}}" data-url="{{item.photoUrl}}" bindtap="preViewImg"></image>
+					</view>
 				</block>
 			</view>
 		</view>
@@ -74,16 +80,24 @@
 		</view>
 		<view class="replay_box">
 			<!-- 回复文字 -->
-			<view>
+			<view style="margin: 0 0 20rpx 0">
 				<input value="{{message}}" placeholder="点击回复" bindinput="bindEdit"></input>
 			</view>
 			<!-- 回复图片 -->
-			<view bindtap="upload" class="uploadImg uploadReplayImg">
-				<block wx:for="{{imageList}}" wx:key="index">
-					<image class="replayImg" src="{{item}}"></image>
-				</block>
-				<view class="uploadIcon">
-					<view class="iconfont iconzhaoxiangji" style="font-size:40rpx"></view>
+			<view class='picVideoList'>
+				<view class='picItem' wx:for="{{tempData}}" wx:for-item="temp" wx:key="url">
+					<image src='{{temp["url"]}}' mode='aspectFill'></image>
+					<view class='LoadBox' wx:if="{{setState==0}}">
+						<text>{{temp["progress"]}}%</text>
+						<view class='loading'>
+							<view class='loadingColor' style='width:{{temp["progress"]}}%'></view>
+						</view>
+					</view>
+					<image class='delPic' wx:if="{{setState==1}}" data-index='{{index}}' catchtap='delPic'
+						src='/images/icon_picDel.png'></image>
+				</view>
+				<view class='picItem' bindtap='uploadPic' wx:if="{{picNum<9}}">
+					<image src='/images/uploadPic.png'></image>
 				</view>
 			</view>
 		</view>

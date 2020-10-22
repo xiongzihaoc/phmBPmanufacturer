@@ -18,3 +18,11 @@
 .Valcolor {
   color: #a8a8a8;
 }
+.hospitalname{
+  text-align:right;
+  display:inline-block;
+  width:500rpx;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap
+}

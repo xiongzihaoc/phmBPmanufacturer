@@ -1,6 +1,8 @@
 // pages/patient/patientDetail/userInfoDetail/index.js
 import { UserInfo } from "./userInfo.modle"
 let userInfo = new UserInfo();
+import { Patient } from "../../patient/index_modle.js"
+let patientInfo = new Patient();
 Page({
 
   /**
@@ -20,9 +22,37 @@ Page({
     let hospital = wx.getStorageSync('hospital')
     this.setData({
       name:name,
-      phone:phone
-    })
+      phone:phone,
+      hospital:hospital
+    });
+    this.getHospitalList();
   },
+
+  getHospitalList: function () {
+    let that = this;
+    patientInfo.getHospitalList((res) => {
+      console.log(res);
+      this.setData({
+        hospitalList: res.data
+      })
+      var hospital='';
+      that.data.hospitalList.forEach(element => {
+        hospital += element.name+',';
+
+      });
+      if(hospital != ''){
+        hospital = hospital.substr(0,hospital.length-1);
+        that.setData({
+          hospital:hospital
+        });
+        console.log(this.data.hospital);
+        
+      }
+      
+    });
+  },
+
+  
 
   /**
    * 生命周期函数--监听页面初次渲染完成

@@ -1,11 +1,47 @@
 <view>
-	<!-- <view wx:if="{{!isLogin}}" class="noBingDoctorbox" bindtap="bindDoctor">
-		<text style="display:block;">还未登录,请点击登录</text>
-	</view> -->
-	<view style="padding:20rpx 30rpx 30rpx;box-sizing: border-box;">
+	<view wx:if="{{!isLogin}}">
+		<view style="text-align: center;">
+			<image style="width:60%;height:400rpx;margin-top:30rpx;" src="/images/app_cover.png"></image>
+			<view style="margin-left:30%">
+				<view style="display:flex;align-items: center;justify-content: left;margin-top:20rpx;">
+					<view style="background:#FDBD2F;width:20rpx;height:20rpx;border-radius: 50%;"></view>
+					<text style="margin-left:20rpx;color:#000000;font-weight:700;font-size:34rpx;">免费注册</text>
+				</view>
+				<view style="display:flex;align-items: center;justify-content: left;margin-top:20rpx;">
+					<view style="background:#FDBD2F;width:20rpx;height:20rpx;border-radius: 50%;"></view>
+					<text style="margin-left:20rpx;color:#000000;font-weight:700;font-size:34rpx;">合理的运动推荐</text>
+				</view>
+				<view style="display:flex;align-items: center;justify-content: left;margin-top:20rpx;">
+					<view style="background:#FDBD2F;width:20rpx;height:20rpx;border-radius: 50%;"></view>
+					<text style="margin-left:20rpx;color:#000000;font-weight:700;font-size:34rpx;">针对性的营养食谱</text>
+				</view>
+				<view style="display:flex;align-items: center;justify-content: left;margin-top:20rpx;">
+					<view style="background:#FDBD2F;width:20rpx;height:20rpx;border-radius: 50%;"></view>
+					<text style="margin-left:20rpx;color:#000000;font-weight:700;font-size:34rpx;">海量的健康知识文章</text>
+				</view>
+
+			</view>
+			<view
+				style="background:#1ADCA9;width:70%;margin:auto;padding:20rpx 0;border-radius:50rpx;color:#fff;margin-top:30rpx;"
+				bindtap="login">
+				<text>立即申请</text>
+			</view>
+			<view style="color:#D6D6D6;font-size:30rpx;margin-top:70rpx;">
+				<text>问题咨询反馈功能</text>
+			</view>
+
+			<view style="display:flex;justify-content:center;color:#D6D6D6;font-size:30rpx;margin-top:40rpx;">
+				<text>一对一在线交流</text>
+				<text style="margin-left:100rpx;">专业人员提供问答</text>
+			</view>
+		</view>
+	</view>
+	<view wx:else style="padding:20rpx 30rpx 30rpx;box-sizing: border-box;">
 		<!-- 起始时间 结束时间 -->
 		<view class="weui-search-bar">
 			<view class="weui-search-bar__form">
+				<!-- 清除图标 -->
+				<text wx:if="{{closeIconShow}}" bindtap="closeIcon" class="iconfont iconclose closeIcon"></text>
 				<!-- 搜索框 -->
 				<view class="weui-search-bar__box searchInput" bindtap="selectTimer">
 					<icon class="weui-icon-search_in-box" type="search" size="24"></icon>
@@ -14,15 +50,21 @@
 				</view>
 			</view>
 		</view>
-		<view>
-			<view class="title_box">
-				<view class="title">反馈列表</view>
-				<view class="choose_box">
-					<text class="choose" bindtap="screen">筛选</text>
-					<text class="iconfont iconarrow iconR"></text>
-				</view>
+		<view class="title_box">
+			<view class="title">反馈列表</view>
+			<view class="choose_box">
+				<text class="choose" bindtap="screen">筛选</text>
+				<text class="iconfont iconarrow iconR"></text>
 			</view>
-			<!-- <view class="time">2020年5月27日</view> -->
+		</view>
+		<!-- 患者列表 -->
+		<!-- 为空 -->
+		<view class="kong" wx:if="{{healthList.length <= 0}}">
+			<text class="iconfont iconkong"></text>
+			<view style="color:#a8a8a8;margin-top:10rpx;">暂无数据</view>
+		</view>
+		<!-- 不为空 -->
+		<view wx:else>
 			<block wx:for="{{healthList}}" wx:key="id">
 				<view class="hosInfo">
 					<view wx:if="{{item.status == 0}}" data-id="{{item.id}}" class="reply" bindtap="replay">
@@ -174,41 +216,15 @@
 								</block>
 								<block wx:for="{{instrumentList}}" wx:key="id">
 									<block wx:if="{{item.id == instrumentNum}}">
-										<text class="hos_style recoilState_choose" bindtap="chooseInstrument" data-id="{{item.id}}"
-											data-info="{{item.models}}">{{item.name}}</text>
+										<text class="hos_style recoilState_choose" bindtap="chooseInstrument"
+											data-id="{{item.id}}">{{item.name}}</text>
 									</block>
 									<block wx:elif="{{instrumentAllNum == 1}}">
 										<text class="hos_style recoilState_choose">{{item.name}}</text>
 									</block>
 									<block wx:else>
-										<text class="hos_style recoilState_con" bindtap="chooseInstrument" data-id="{{item.id}}"
-											data-info="{{item.models}}">{{item.name}}</text>
-									</block>
-								</block>
-							</view>
-						</scroll-view>
-					</view>
-					<!-- 选择参数 -->
-					<view class="recoilState_box recoilState_box_instrument ">
-						<view class="recoilState">
-							<text style="border-bottom:2px solid #1ADCA9">选择参数</text>
-						</view>
-						<scroll-view scroll-x="true">
-							<view class="recoilState_">
-								<block wx:if="{{parameterNum == 1}}">
-									<text class="recoilState_choose commonSty" bindtap="chooseparameterAll">全部</text>
-								</block>
-								<block wx:else>
-									<text class="recoilState_con commonSty" bindtap="chooseparameterAll">全部</text>
-								</block>
-								<!-- 参数列表 -->
-								<block wx:for="{{parameterList}}" wx:key="id">
-									<block wx:if="{{parameterNum == 1}}">
-										<text class="hos_style recoilState_choose">{{item.model}}</text>
-									</block>
-									<block wx:else>
-										<text class="hos_style recoilState_con {{item.choose == 1?'recoilState_choose':'recoilState_con'}}"
-											bindtap="chooseparameter" data-id="{{item.id}}" data-info="{{item}}">{{item.model}}</text>
+										<text class="hos_style recoilState_con" bindtap="chooseInstrument"
+											data-id="{{item.id}}">{{item.name}}</text>
 									</block>
 								</block>
 							</view>

@@ -21,6 +21,14 @@ Page({
       url: '/pages/mine/userInfo/userInfo',
     })
   },
+  login: function () {
+    wx.clearStorage();
+    wx.nextTick(() => {
+      wx.navigateTo({
+        url: '/pages/Authorization/index',
+      })
+    });
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -50,20 +58,21 @@ Page({
       });
       that.setData({
         userName: name,
-        headerUrl:headerUrl
+        headerUrl: headerUrl
       });
-      
-    } else {
-      if (!app.userIndex) {
-        app.userIndex = true;
-        wx.clearStorage();
-        wx.nextTick(() => {
-          wx.navigateTo({
-            url: '/pages/Authorization/index',
-          })
-        });
-      }
+
     }
+    // else {
+    //   if (!app.userIndex) {
+    //     app.userIndex = true;
+    //     wx.clearStorage();
+    //     wx.nextTick(() => {
+    //       wx.navigateTo({
+    //         url: '/pages/Authorization/index',
+    //       })
+    //     });
+    //   }
+    // }
   },
 
   /**

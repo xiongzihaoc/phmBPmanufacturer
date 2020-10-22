@@ -29,11 +29,8 @@ Page({
           url: '../bindNum/bindNum',
         })
       } else {
-        // wx.setStorageSync('tencentImUser', data.userInfo.tencentImUser);
-        // wx.setStorageSync('tencentImPassword', data.userInfo.tencentImPassword);
-        wx.switchTab({
-          url: '/pages/mine/index',
-        })
+        wx.navigateBack({
+        });
       }
 
     });

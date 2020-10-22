@@ -1,6 +1,6 @@
 <view class="box">
 	<view class="infoList">
-		<text class="fontWeight">品牌</text>
+		<text class="fontWeight">姓名</text>
 		<text class="Valcolor">{{name}}</text>
 	</view>
 	<view class="infoList">
@@ -9,6 +9,6 @@
 	</view>
 	<view class="infoList">
 		<text class="fontWeight">合作医院</text>
-		<text class="Valcolor">浙江中医院</text>
+		<text class="Valcolor hospitalname">{{hospital}}</text>
 	</view>
 </view>

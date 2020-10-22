@@ -2,6 +2,8 @@
 import { Patient } from "./hosDetail_modle"
 let patientInfo = new Patient();
 var utils = require("../../utils/util.js");
+import { uploadUtil } from "../../utils/uploadUtil.js";
+const uploadutil = new uploadUtil();
 Page({
 
   /**
@@ -20,27 +22,93 @@ Page({
     replyId: "",
     message: "",
     imageList: [],
+    tempData:[],
+    travelResource:[],
+    setState:1,
+    picNum:0,
   },
   // 上传图片
-  upload: function () {
-    let that = this
+  delPic(e){
+    const index = e.currentTarget.dataset.index;
+    let newTempData = this.data.tempData;
+    let travelResource = this.data.travelResource;
+    newTempData.splice(index, 1);
+    travelResource.splice(index,1);
+    this.setData({
+        tempData:newTempData,
+        travelResource: travelResource
+    });
+    this.setData({
+        picNum:this.data.picNum-1
+    });
+    console.log(this.data.tempData);
+    console.log(this.data.travelResource);
+},
+  uploadPic(){
+    let that = this;
+    if(!this.data.setState){
+        return false;
+    }
     wx.chooseImage({
-      count: 3,
-      sizeType: ['original', 'compressed'],
-      sourceType: ['album', 'camera'],
-      success(res) {
-        console.log(res);
-
-        // tempFilePath可以作为img标签的src属性显示图片
-        // const tempFilePaths = res.tempFilePaths
-        // console.log(tempFilePaths);
-
-        that.setData({
-          imageList: that.data.imageList.concat(res.tempFilePaths)
+        count: 9-that.data.picNum,
+        success(res) {
+            const tempFilePaths = res.tempFilePaths
+            let newTempFilePaths = tempFilePaths.map((tempFile)=>{
+                return {
+                    progress : 0,
+                    url: tempFile,
+                    flag:1
+                }
+            });
+            let picNum = that.data.picNum+res.tempFilePaths.length;
+            that.setData({
+                tempData: that.data.tempData.concat(newTempFilePaths),
+                setState:0,
+                picNum: picNum
+            });
+            wx.showLoading({
+                title: '上传图片中',
+            })
+            uploadutil.uploadImg(tempFilePaths,res=>{
+                let newPicInfo = res.map((pic,index)=>{
+                    console.log(index);
+                    console.log(res.length);
+                    let picUrl = pic.data;
+                    that.setData({
+                        travelResource:that.data.travelResource.concat(picUrl),
+                        setState:1
+                    });
+                    if(index == res.length-1){
+                        wx.hideLoading();
+                    }
+                });
+                console.log(that.data.travelResource);
+            },err=>{
+                console.log(err);
+            },upData=>{
+                let file = upData['file'];
+                let tempData = that.data.tempData;
+                tempData.map((temp,index)=>{
+                    if (temp.url == file){
+                        temp.progress = upData["progress"];
+                    }
+                }); 
+                that.setData({
+                    tempData:tempData
+                });
+            });
+        },
+        fail(err){
+            if (err.errMsg ==="chooseImage:fail cancel"){
+                wx.showToast({
+                    title: '取消选择',
+                    icon: "none"
+                    })
+                }
+            }
         })
-      }
-    })
-  },
+    },
+
   bindEdit: function (e) {
     this.setData({
       message: e.detail.value
@@ -50,13 +118,21 @@ Page({
   // 点击回复按钮
   replyBtn: function (e) {
     let that = this
-    console.log(e);
-    patientInfo.replayInfo(this.data.replyId, this.data.message,this.data.imageList, (res) => {
-      console.log(res);
-      wx.switchTab({
-        url: '/pages/patient/index',
+    if (that.data.message == "") {
+      wx.showToast({
+        title: '回复内容不能为空',
+        icon:"none"
       })
-    });
+      return
+    } else {
+      // 调用列表页的获取数据函数
+      patientInfo.replayInfo(this.data.replyId, this.data.message, this.data.travelResource, (res) => {
+        wx.setStorageSync('isreplay', 1);
+        wx.switchTab({
+          url: '/pages/patient/index',
+        })
+      });
+    }
   },
   // 预览图片
   preViewImg: function (e) {
@@ -71,6 +147,7 @@ Page({
   // 获取详情
   getDetail: function () {
     patientInfo.getUserInfo(this.data.replyId, (res) => {
+      console.log(res);
       this.setData({
         hospital: res.data.hospital,
         createTime: res.data.createTime,

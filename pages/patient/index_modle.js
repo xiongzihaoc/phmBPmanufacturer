@@ -4,7 +4,7 @@ class Patient extends Comm {
     super();
   }
   getUserInfo(pageNum, pageSzie, stime, etime, parameterObj, callback) {
-    let vendorId = (wx.getStorageSync('vendorId'))
+    let vendorId = wx.getStorageSync('vendorId');
     let props = {
       url: "/api/vendor/list",
       contentType: 'application/json',
@@ -12,7 +12,7 @@ class Patient extends Comm {
         "pageNum": pageNum,
         "pageSize": pageSzie,
         "hospital": parameterObj.hospital,
-        "goodsModelIdStr": parameterObj.goodsModelIdStr,
+        "goodsId": parameterObj.goodsId,
         "status": parameterObj.status,
         "createTime": stime,
         "endTime": etime,
